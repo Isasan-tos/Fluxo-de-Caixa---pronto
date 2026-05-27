@@ -1,16 +1,22 @@
-# Fluxo de Caixa — Backend
+# Sistema de Fluxo de Caixa ◈
 
-API REST para gerenciamento de fluxo de caixa. Projeto de faculdade — Node.js + Express.
+Aplicação Full-Stack para gerenciamento e controle financeiro pessoal ou empresarial. Projeto desenvolvido com arquitetura MVC utilizando Node.js no ecossistema do backend e JavaScript Vanila com manipulação dinâmica do DOM no frontend, integrado a um banco de dados relacional MySQL.
 
-## Tecnologias
+---
 
-- Node.js
-- Express.js
-- MySQL
-- mysql2
-- UUID (geração de IDs únicos)
-- CORS (integração com o frontend)
+## Tecnologias Utilizadas
 
+### Frontend
+- **HTML5 & CSS3:** Interface responsiva com padrão estético moderno e estruturação em visualizações de tela única (Single Page Application simulada).
+- **JavaScript (ES6+):** Manipulação dinâmica de tabelas, controle assíncrono de requisições de API (`Fetch API`), mapeamento de eventos dinâmicos por Tipo de lançamento e sistema nativo de navegação estrutural.
+
+### Backend
+- **Node.js & Express.js:** Criação e estruturação da API RESTful.
+- **MySQL & mysql2:** Armazenamento persistente de dados com gerenciamento de conexões otimizado (`Pool de conexões`).
+- **UUID (v4):** Geração de chaves primárias identificadoras universais para os registros.
+- **CORS:** Middleware para liberação e segurança das requisições entre origens.
+
+---
 ---
 
 ## Como rodar
@@ -60,31 +66,28 @@ A API ficará disponível em: `http://localhost:3000`
 ## Estrutura de pastas
 
 ```
-fluxo-caixa-backend/
-├── src/
-│   ├── server.js                           # Ponto de entrada da aplicação
-│   │
-│   ├── config/
-│   │   └── database.js                    # Configuração conexão MySQL
-│   │
-│   ├── routes/
-│   │   ├── lancamentos.routes.js          # Define as URLs de lançamentos
-│   │   └── resumo.routes.js               # Define a URL de resumo
-│   │
-│   ├── controllers/
-│   │   ├── lancamentos.controller.js      # Lógica do CRUD
-│   │   └── resumo.controller.js           # Lógica do resumo financeiro
-│   │
-│   ├── middlewares/
-│   │   └── errorHandler.js                # Tratamento global de erros
-│   │
-│   └── models/
-│       └── lancamentos.model.js           # Comunicação com MySQL
+fluxo-caixa/
+├── frontend/
+│   ├── index.html                  # Estrutura visual das seções (Painel, Lançamentos, Novo)
+│   ├── styles.css                  # Estilização da interface e componentes
+│   └── script.js                   # Sistema de rotas frontend, validação e Fetch API
 │
-├── .gitignore
-├── package.json
-├── package-lock.json
-└── README.md
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── database.js         # Configuração e Pool de conexão com o MySQL
+│   │   ├── controllers/
+│   │   │   ├── lancamentos.controller.js # Regras de negócio e intermediação do CRUD
+│   │   │   └── resumo.controller.js      # Operações matemáticas de consolidação do saldo
+│   │   ├── middlewares/
+│   │   │   └── errorHandler.js     # Captura e tratamento global de erros HTTP
+│   │   ├── models/
+│   │   │   └── lancamentos.model.js # Queries e interações diretas com o banco MySQL
+│   │   ├── routes/
+│   │   │   ├── lancamentos.routes.js # Definição dos endpoints de lançamentos
+│   │   │   └── resumo.routes.js      # Definição do endpoint de balanço geral
+│   │   └── server.js               # Inicialização do servidor e distribuição estática
+│   ├── package.json
+│   └── README.md
 ```
 
 ---
@@ -205,11 +208,8 @@ GET /api/resumo?dataInicio=2025-05-01&dataFim=2025-05-31
 - Organização em arquitetura MVC
 - Tratamento global de erros
 - Estrutura preparada para integração com frontend React
-
-## Próximos passos (quando evoluir o projeto)
-
-- Adicionar autenticação com JWT
-- Implementar dashboard financeiro
-- Adicionar gráficos financeiros
-- Criar sistema de usuários
-
+- Dashboard Financeiro (Painel): Exibição em tempo real do Saldo Atual (com badges dinâmicos de situação positiva/negativa), Totalizador acumulado de Entradas e Saídas diretamente calculados de queries do MySQL.
+- Listagem em Tempo Real: Tabelas que extraem a resposta JSON estruturada do backend de forma segura e tratam estados vazios.
+- Filtro Inteligente de Categorias: O formulário de cadastro atualiza os campos de seleção dinamicamente baseado no tipo selecionado (Ex: Exibe categorias como Salário e Venda se for Entrada; e Alimentação ou Transporte se for Saída).
+- Navegação SPA nativa: Alternância fluida de telas no frontend utilizando seletores de atributos (data-view) sem a necessidade de recarregar a página.
+- Robustez a Erros: Envelopamento de listeners contra carregamentos nulos e tratativas de exceção visual para requisições que falham.
