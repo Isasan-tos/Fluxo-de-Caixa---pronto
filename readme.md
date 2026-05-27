@@ -40,7 +40,8 @@ CREATE TABLE lancamentos (
     );
 
 # 3. Configurar conexão com o MySQL
-# Arquivo: src/config/database.js
+# Arquivo: src/config/db.js
+# Arquivo: src/models/db.js
 const mysql = require("mysql2/promise");
 
 const pool = mysql.createPool({
