@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fluxo de Caixa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">◈</span>
+      <span class="brand-name">Caixa</span>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-view="dashboard"><span class="nav-icon">⬡</span><span>Painel</span></button>
+      <button class="nav-item" data-view="lancamentos"><span class="nav-icon">⬢</span><span>Lançamentos</span></button>
+      <button class="nav-item" data-view="novo"><span class="nav-icon">+</span><span>Novo</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="api-status" id="apiStatus">
+        <span class="status-dot"></span><span class="status-label">API</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="view active" id="view-dashboard">
+      <header class="page-header">
+        <div>
+          <p class="page-eyebrow">Visão Geral</p>
+          <h1 class="page-title">Fluxo de Caixa</h1>
+        </div>
+        <div class="header-actions">
+          <div class="date-filter">
+            <input type="date" id="dashDateInicio" class="input-small" />
+            <span class="date-sep">—</span>
+            <input type="date" id="dashDateFim" class="input-small" />
+            <button class="btn-ghost" id="btnFiltrarResumo">Filtrar</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="cards-grid">
+        <div class="card card-saldo" id="cardSaldo">
+          <p class="card-label">Saldo Atual</p>
+          <p class="card-value" id="valorSaldo">—</p>
+          <span class="card-badge" id="badgeSituacao">—</span>
+        </div>
+        <div class="card card-entrada">
+          <p class="card-label">Total Entradas</p>
+          <p class="card-value" id="valorEntradas">—</p>
+        </div>
+        <div class="card card-saida">
+          <p class="card-label">Total Saídas</p>
+          <p class="card-value" id="valorSaidas">—</p>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title">Por Categoria</h2>
+        <div class="categoria-grid" id="categoriaGrid">
+          <div class="loading-placeholder">Carregando...</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-header-row">
+          <h2 class="section-title">Últimos Lançamentos</h2>
+          <button class="btn-link" data-view="lancamentos">Ver todos →</button>
+        </div>
+        <div class="table-wrapper">
+          <table class="table" id="tabelaRecentes">
+            <thead>
+              <tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th class="th-right">Valor</th></tr>
+            </thead>
+            <tbody id="tbodyRecentes">
+              <tr><td colspan="5" class="td-loading">Carregando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-lancamentos">
+      <header class="page-header">
+        <div>
+          <p class="page-eyebrow">Registro</p>
+          <h1 class="page-title">Lançamentos</h1>
+        </div>
+        <button class="btn-primary" data-view="novo">+ Novo Lançamento</button>
+      </header>
+
+      <div class="filter-bar">
+        <select id="filtroTipo" class="input-select">
+          <option value="">Todos os tipos</option>
+          <option value="entrada">Entradas</option>
+          <option value="saida">Saídas</option>
+        </select>
+        <select id="filtroCategoria" class="input-select">
+          <option value="">Todas categorias</option>
+          <option value="salario">Salário</option><option value="freelance">Freelance</option>
+          <option value="investimento">Investimento</option><option value="venda">Venda</option>
+          <option value="alimentacao">Alimentação</option><option value="transporte">Transporte</option>
+          <option value="moradia">Moradia</option><option value="saude">Saúde</option>
+          <option value="educacao">Educação</option><option value="lazer">Lazer</option>
+          <option value="outros">Outros</option>
+        </select>
+        <input type="date" id="filtroDataInicio" class="input-small" />
+        <input type="date" id="filtroDataFim" class="input-small" />
+        <button class="btn-ghost" id="btnAplicarFiltros">Aplicar</button>
+        <button class="btn-ghost btn-ghost-red" id="btnLimparFiltros">Limpar</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table" id="tabelaLancamentos">
+          <thead>
+            <tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th class="th-right">Valor</th><th class="th-right">Ações</th></tr>
+          </thead>
+          <tbody id="tbodyLancamentos">
+            <tr><td colspan="6" class="td-loading">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="view" id="view-novo">
+      <header class="page-header">
+        <div>
+          <p class="page-eyebrow" id="formEyebrow">Novo Registro</p>
+          <h1 class="page-title" id="formTitle">Novo Lançamento</h1>
+        </div>
+        <button class="btn-ghost" data-view="lancamentos">← Voltar</button>
+      </header>
+
+      <div class="form-card">
+        <input type="hidden" id="editId" />
+        <div class="form-row">
+          <div class="form-group form-group-lg">
+            <label class="form-label">Descrição <span class="required">*</span></label>
+            <input type="text" id="fDescricao" class="input-field" placeholder="Ex: Salário de maio" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Valor (R$) <span class="required">*</span></label>
+            <input type="number" id="fValor" class="input-field" placeholder="0,00" step="0.01" min="0.01" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Tipo <span class="required">*</span></label>
+            <select id="fTipo" class="input-select input-field">
+              <option value="">Selecione</option>
+              <option value="entrada">↑ Entrada</option>
+              <option value="saida">↓ Saída</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Categoria</label>
+            <select id="fCategoria" class="input-select input-field">
+              <option value="">Selecione o tipo primeiro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Data</label>
+            <input type="date" id="fData" class="input-field" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-ghost" data-view="lancamentos">Cancelar</button>
+          <button class="btn-primary" id="btnSalvar">Salvar Lançamento</button>
+        </div>
+        <div class="form-feedback" id="formFeedback"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h3 class="modal-title">Excluir lançamento?</h3>
+      <p class="modal-body">Esta ação não pode ser desfeita.</p>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="btnCancelarDelete">Cancelar</button>
+        <button class="btn-danger" id="btnConfirmarDelete">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="script.js"></script>
+</body>
+</html>
